@@ -1,0 +1,15 @@
+[general]
+name = "Hello"
+description = "Example toml to cli"
+generator = "github.com/urfave/cli"
+
+[[command]]
+name = "foo"
+aliases = [ "f" ]
+description = "processes foo"
+action = "fooFunc"
+
+[[command.flags]]
+name = "lang"
+aliases = [ "l" ]
+description = "language for processing"

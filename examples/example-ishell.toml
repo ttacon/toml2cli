@@ -1,0 +1,17 @@
+[general]
+name = "Hello"
+description = "Example toml to cli"
+generator = "github.com/abiosoft/ishell"
+historyPath = ".config/foo/history"
+banner = "Banner text!"
+
+[[command]]
+name = "foo"
+aliases = [ "f" ]
+description = "processes foo"
+func = "fooFunc"
+
+[[command.flags]]
+name = "lang"
+aliases = [ "l" ]
+description = "language for processing"

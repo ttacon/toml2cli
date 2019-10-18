@@ -1,0 +1,2 @@
+# Ignore generated example go files
+examples/*.go
