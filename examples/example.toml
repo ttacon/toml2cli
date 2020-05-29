@@ -10,6 +10,7 @@ description = "processes foo"
 action = "fooFunc"
 
 [[command.flags]]
+type = "string"
 name = "lang"
 aliases = [ "l" ]
 description = "language for processing"
