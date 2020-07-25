@@ -1,2 +1,5 @@
 # Ignore generated example go files
 examples/*.go
+
+# Ignore the binary we make for testing
+toml2cli
