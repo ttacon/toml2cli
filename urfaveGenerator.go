@@ -196,8 +196,9 @@ func urfaveAddFlags(flags []map[string]interface{}) string {
 			buf.WriteString(fmt.Sprintf("Required: %v,\n", required))
 		}
 
-		if value, ok := flg["value"]; ok {
-			buf.WriteString(valWriter(value))
+		// BoolFlag's don't have default values so skip them.
+		if value, ok := flg["value"]; ok && typ != "bool" {
+			buf.WriteString(fmt.Sprintf("Value: %v,\n", valWriter(value)))
 		}
 
 		if aliases, ok := strSliceFromMap("aliases", flg); ok {
@@ -231,16 +232,16 @@ func stringWriter(val interface{}) string {
 		return "<invalid>"
 	}
 
-	return str
+	return fmt.Sprintf("%q", str)
 }
 
 func intWriter(val interface{}) string {
-	v, ok := val.(int) // ¯\_(ツ)_/¯
+	v, ok := val.(int64) // ¯\_(ツ)_/¯
 	if !ok {
 		return "<invalid>"
 	}
 
-	return strconv.Itoa(v)
+	return strconv.FormatInt(v, 10)
 }
 
 // strFromMap extracts a string value from the map, if it can.
