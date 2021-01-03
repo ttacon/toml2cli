@@ -6,7 +6,6 @@ import (
 	"io/ioutil"
 	"os"
 	"strconv"
-	"strings"
 
 	"golang.org/x/tools/imports"
 )
@@ -120,12 +119,18 @@ func urfaveAddCommands(buf *bytes.Buffer, m *MetaInfo) error {
 		}
 
 		if aliases, ok := strSliceFromMap("aliases", command); ok {
-			if _, err := buf.WriteString(
-				fmt.Sprintf(
-					"Aliases: []string{ %q },\n",
-					strings.Join(aliases, "\", \""),
-				),
-			); err != nil {
+			if _, err := buf.WriteString("Aliases: []string{\n"); err != nil {
+				return err
+			}
+
+			for _, alias := range aliases {
+				if _, err := buf.WriteString(
+					fmt.Sprintf("%q,\n", alias),
+				); err != nil {
+					return err
+				}
+			}
+			if _, err := buf.WriteString("},\n"); err != nil {
 				return err
 			}
 		}
@@ -202,12 +207,11 @@ func urfaveAddFlags(flags []map[string]interface{}) string {
 		}
 
 		if aliases, ok := strSliceFromMap("aliases", flg); ok {
-			buf.WriteString(
-				fmt.Sprintf(
-					"Aliases: []string{ %q },\n",
-					strings.Join(aliases, "\", \""),
-				),
-			)
+			buf.WriteString("Aliases: []string{\n")
+			for _, alias := range aliases {
+				buf.WriteString(fmt.Sprintf("%q,\n", alias))
+			}
+			buf.WriteString("},\n")
 		}
 		buf.WriteString("},\n")
 	}

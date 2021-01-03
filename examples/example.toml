@@ -19,5 +19,5 @@ value = "foo"
 [[command.flags]]
 type = "int"
 name = "count"
-aliases = [ "c" ]
+aliases = [ "c", "num" ]
 value = 20
