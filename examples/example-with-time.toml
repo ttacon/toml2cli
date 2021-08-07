@@ -1,0 +1,28 @@
+[general]
+name = "Hello"
+description = "Example toml to cli"
+generator = "github.com/urfave/cli"
+
+[[command]]
+name = "foo"
+aliases = [ "f" ]
+description = "processes foo"
+action = "fooFunc"
+
+[[command.flags]]
+type = "string"
+name = "lang"
+aliases = [ "l" ]
+description = "language for processing"
+value = "foo"
+
+[[command.flags]]
+type = "int"
+name = "count"
+aliases = [ "c", "num" ]
+value = 20
+
+[[command.flags]]
+type = "timestamp"
+name = "start"
+aliases = [ "s" ]
