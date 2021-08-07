@@ -183,6 +183,9 @@ func urfaveAddFlags(flags []map[string]interface{}) string {
 		case "int32":
 			typeType = "Int32Flag"
 			valWriter = intWriter
+		case "timestamp":
+			typeType = "TimestampFlag"
+			valWriter = stringWriter
 		default:
 			continue // not currently supported
 		}
@@ -204,6 +207,17 @@ func urfaveAddFlags(flags []map[string]interface{}) string {
 		// BoolFlag's don't have default values so skip them.
 		if value, ok := flg["value"]; ok && typ != "bool" {
 			buf.WriteString(fmt.Sprintf("Value: %v,\n", valWriter(value)))
+		} else if !ok && typ == "timestamp" {
+			buf.WriteString(fmt.Sprint("Value: cli.NewTimestamp(time.Now()),\n"))
+		}
+
+		// Timestamp flags support optional layouts
+		if typ == "timestamp" {
+			layout, ok := flg["layout"]
+			if !ok {
+				layout = "2006-01-02T15:04:05"
+			}
+			buf.WriteString(fmt.Sprintf("Layout: %q,\n", layout))
 		}
 
 		if aliases, ok := strSliceFromMap("aliases", flg); ok {
